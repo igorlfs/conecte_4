@@ -25,7 +25,7 @@ void board::printArena() const {
         for (int j = 0; j < COLUMNS; ++j) {
             cout << this->arena[i][j];
             if (j != COLUMNS - 1) {
-                cout << " │ ";
+                cout << BLUE " │ " << RESET;
             }
         }
         cout << endl;
@@ -36,7 +36,7 @@ void board::printHeader() const {
     for (int i = 0; i < COLUMNS; ++i) {
         cout << i;
         if (i != COLUMNS - 1) {
-            cout << " │ ";
+            cout << BLUE << " │ " << RESET;
         }
     }
     cout << endl;
@@ -44,11 +44,11 @@ void board::printHeader() const {
 void board::printSeparator() const {
     for (int i = 0; i < COLUMNS; ++i) {
         if (i == 0) {
-            cout << "──┼";
+            cout << BLUE << "──┼" << RESET;
         } else if (i == COLUMNS - 1) {
-            cout << "──";
+            cout << BLUE << "──" << RESET;
         } else {
-            cout << "───┼";
+            cout << BLUE << "───┼" << RESET;
         }
     }
     cout << endl;
