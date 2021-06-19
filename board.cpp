@@ -45,12 +45,20 @@ void board::printSeparator() const {
 }
 void board::checkUpdateArena(int moveColunm) const {
     if (moveColunm > COLUMNS || moveColunm < 0) {
-        cout << "Jogada Inválida."
-                "Você inseriu um número fora do intervalo de validade!"
+        cout << "Jogada Inválida.\n"
+                "Você inseriu um número fora do intervalo de validade!\n"
                 "Insira um número de 0 a 6"
              << endl;
     }
-    for (int i = 0; i < COLUMNS; ++i) {
+    for (int i = 0; i < ROWS; ++i) {
+        if (moveColunm == i) {
+            if (this->arena[ROWS - 1][moveColunm] != EMPTY) {
+                cout << "Jogada Inválida.\n"
+                        "Você tentou jogar numa coluna cheia!\n"
+                        "Escolha outra coluna"
+                     << endl;
+            }
+        }
     }
 }
 void board::updateArena(int moveColunm, char player) {
