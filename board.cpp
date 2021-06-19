@@ -5,6 +5,7 @@
 #define EMPTY ' '
 #define VALID 1
 #define INVALID 0
+
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -45,13 +46,25 @@ void board::printSeparator() const {
     }
     cout << endl;
 }
+void board::updateArena(int moveColunm, char player) {
+    if (checkUpdateArena(moveColunm)) {
+        for (int i = ROWS; i > -1; --i) {
+            if (this->arena[i][moveColunm] == EMPTY) {
+                this->arena[i][moveColunm] = player;
+                break;
+            }
+        }
+    }
+}
 bool board::checkUpdateArena(int moveColunm) const {
     return (checkColunmOutOfBounds(moveColunm) && checkFullColunm(moveColunm));
 }
 bool board::checkColunmOutOfBounds(int moveColunm) const {
     if (moveColunm > COLUMNS || moveColunm < 0) {
         cout << "Jogada Inválida.\n"
-                "Você inseriu um número fora do intervalo de validade!\n"
+                "Você inseriu um número ("
+             << moveColunm
+             << ") fora do intervalo de validade!\n"
                 "Insira um número de 0 a 6"
              << endl;
         return INVALID;
@@ -61,7 +74,7 @@ bool board::checkColunmOutOfBounds(int moveColunm) const {
 bool board::checkFullColunm(int moveColunm) const {
     for (int i = 0; i < ROWS; ++i) {
         if (moveColunm == i) {
-            if (this->arena[ROWS - 1][moveColunm] != EMPTY) {
+            if (this->arena[0][moveColunm] != EMPTY) {
                 cout << "Jogada Inválida.\n"
                         "Você tentou jogar numa coluna cheia!\n"
                         "Escolha outra coluna"
@@ -72,19 +85,3 @@ bool board::checkFullColunm(int moveColunm) const {
     }
     return VALID;
 }
-void board::updateArena(int moveColunm, char player) {
-    for (int i = 0; i < COLUMNS; ++i) {
-        if (i == moveColunm) {
-            for (int j = ROWS; j > -1; --j) {
-                if (this->arena[j][i] == EMPTY) {
-                    this->arena[j][i] = player;
-                    break;
-                }
-                if (j == 0) {
-                    this->arenaFullHandler();
-                }
-            }
-        }
-    }
-}
-void board::arenaFullHandler() const { return; }

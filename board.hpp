@@ -7,7 +7,6 @@ class board {
 
     void printHeader() const;
     void printSeparator() const;
-    void arenaFullHandler() const;
     bool checkFullColunm(int moveColunm) const;
     bool checkColunmOutOfBounds(int moveColunm) const;
 
