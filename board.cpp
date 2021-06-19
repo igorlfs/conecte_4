@@ -3,6 +3,8 @@
 #define RED "\033[31m"
 #define BLUE "\033[34m"
 #define EMPTY ' '
+#define VALID 1
+#define INVALID 0
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -43,13 +45,20 @@ void board::printSeparator() const {
     }
     cout << endl;
 }
-void board::checkUpdateArena(int moveColunm) const {
+bool board::checkUpdateArena(int moveColunm) const {
+    return (checkColunmOutOfBounds(moveColunm) && checkFullColunm(moveColunm));
+}
+bool board::checkColunmOutOfBounds(int moveColunm) const {
     if (moveColunm > COLUMNS || moveColunm < 0) {
         cout << "Jogada Inválida.\n"
                 "Você inseriu um número fora do intervalo de validade!\n"
                 "Insira um número de 0 a 6"
              << endl;
+        return INVALID;
     }
+    return VALID;
+}
+bool board::checkFullColunm(int moveColunm) const {
     for (int i = 0; i < ROWS; ++i) {
         if (moveColunm == i) {
             if (this->arena[ROWS - 1][moveColunm] != EMPTY) {
@@ -57,9 +66,11 @@ void board::checkUpdateArena(int moveColunm) const {
                         "Você tentou jogar numa coluna cheia!\n"
                         "Escolha outra coluna"
                      << endl;
+                return INVALID;
             }
         }
     }
+    return VALID;
 }
 void board::updateArena(int moveColunm, char player) {
     for (int i = 0; i < COLUMNS; ++i) {

@@ -8,10 +8,12 @@ class board {
     void printHeader() const;
     void printSeparator() const;
     void arenaFullHandler() const;
+    bool checkFullColunm(int moveColunm) const;
+    bool checkColunmOutOfBounds(int moveColunm) const;
 
    public:
     void initializeArena();
     void printArena() const;
-    void checkUpdateArena(int moveColunm) const;
+    bool checkUpdateArena(int moveColunm) const;
     void updateArena(int moveColunm, char player);
 };
