@@ -27,7 +27,7 @@ void board::printArena() const {
 }
 void board::printHeader() const {
     for (int i = 0; i < COLUMNS; ++i) {
-        cout << i + 1;
+        cout << i;
         if (i != COLUMNS - 1) cout << " │ ";
     }
     cout << endl;
@@ -42,6 +42,16 @@ void board::printSeparator() const {
             cout << "───┼";
     }
     cout << endl;
+}
+void board::checkUpdateArena(int moveColunm) const {
+    if (moveColunm > COLUMNS) {
+        cout << "Jogada Inválida."
+                "Você inseriu um número muito grande!"
+                "Insira um número de 0 a 6"
+             << endl;
+    }
+    for (int i = 0; i < COLUMNS; ++i) {
+    }
 }
 void board::updateArena(int moveColunm, char player) {
     for (int i = 0; i < COLUMNS; ++i) {

@@ -12,5 +12,6 @@ class board {
    public:
     void initializeArena();
     void printArena() const;
+    void checkUpdateArena(int moveColunm) const;
     void updateArena(int moveColunm, char player);
 };
