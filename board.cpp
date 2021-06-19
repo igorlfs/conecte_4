@@ -44,9 +44,9 @@ void board::printSeparator() const {
     cout << endl;
 }
 void board::checkUpdateArena(int moveColunm) const {
-    if (moveColunm > COLUMNS) {
+    if (moveColunm > COLUMNS || moveColunm < 0) {
         cout << "Jogada Inválida."
-                "Você inseriu um número muito grande!"
+                "Você inseriu um número fora do intervalo de validade!"
                 "Insira um número de 0 a 6"
              << endl;
     }
