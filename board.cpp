@@ -19,10 +19,14 @@ void board::initializeArena() {
 void board::printArena() const {
     this->printHeader();
     for (int i = 0; i < ROWS; ++i) {
-        if (i != ROWS) this->printSeparator();
+        if (i != ROWS) {
+            this->printSeparator();
+        }
         for (int j = 0; j < COLUMNS; ++j) {
             cout << this->arena[i][j];
-            if (j != COLUMNS - 1) cout << " │ ";
+            if (j != COLUMNS - 1) {
+                cout << " │ ";
+            }
         }
         cout << endl;
     }
@@ -31,18 +35,21 @@ void board::printArena() const {
 void board::printHeader() const {
     for (int i = 0; i < COLUMNS; ++i) {
         cout << i;
-        if (i != COLUMNS - 1) cout << " │ ";
+        if (i != COLUMNS - 1) {
+            cout << " │ ";
+        }
     }
     cout << endl;
 }
 void board::printSeparator() const {
     for (int i = 0; i < COLUMNS; ++i) {
-        if (i == 0)
+        if (i == 0) {
             cout << "──┼";
-        else if (i == COLUMNS - 1)
+        } else if (i == COLUMNS - 1) {
             cout << "──";
-        else
+        } else {
             cout << "───┼";
+        }
     }
     cout << endl;
 }
@@ -62,9 +69,7 @@ bool board::checkUpdateArena(int moveColunm) const {
 bool board::checkColunmOutOfBounds(int moveColunm) const {
     if (moveColunm > COLUMNS || moveColunm < 0) {
         cout << "Jogada Inválida.\n"
-                "Você inseriu um número ("
-             << moveColunm
-             << ") fora do intervalo de validade!\n"
+                "Você inseriu um número fora do intervalo de validade!\n"
                 "Insira um número de 0 a 6"
              << endl;
         return INVALID;

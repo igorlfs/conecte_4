@@ -1,6 +1,6 @@
 #pragma once
 class board {
-   private:
+  private:
     static const int ROWS = 6;
     static const int COLUMNS = 7;
     char arena[ROWS][COLUMNS];
@@ -10,7 +10,7 @@ class board {
     bool checkFullColunm(int moveColunm) const;
     bool checkColunmOutOfBounds(int moveColunm) const;
 
-   public:
+  public:
     void initializeArena();
     void printArena() const;
     bool checkUpdateArena(int moveColunm) const;
