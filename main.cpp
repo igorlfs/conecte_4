@@ -8,7 +8,7 @@ char outroJogador(char jogador1);
 void jogue(char *jogador, board tabuleiro);
 int main() {
   // Todo:
-  // Cores
+  // Bugs de leitura
   // Checar condição de vitória
   board tabuleiro;
   char jogador[2];

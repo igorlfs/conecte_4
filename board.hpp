@@ -9,10 +9,11 @@ private:
   void printSeparator() const;
   bool checkFullColunm(int moveColunm) const;
   bool checkColunmOutOfBounds(int moveColunm) const;
+  void printArenaColorHelper(char playerColor) const;
 
 public:
   board();
   void printArena() const;
   bool checkUpdateArena(int moveColunm) const;
-  void updateArena(int moveColunm, char player);
+  void updateArena(int moveColunm, char playerColor);
 };

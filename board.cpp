@@ -1,6 +1,7 @@
 #include "board.hpp"
 #define RESET "\033[0m"
 #define RED "\033[31m"
+#define YELLOW "\033[33m"
 #define BLUE "\033[34m"
 #define EMPTY ' '
 #define VALID 1
@@ -23,7 +24,7 @@ void board::printArena() const {
       this->printSeparator();
     }
     for (int j = 0; j < COLUMNS; ++j) {
-      cout << this->arena[i][j];
+      this->printArenaColorHelper(this->arena[i][j]);
       if (j != COLUMNS - 1) {
         cout << BLUE " │ " << RESET;
       }
@@ -53,10 +54,19 @@ void board::printSeparator() const {
   }
   cout << endl;
 }
-void board::updateArena(int moveColunm, char player) {
+void board::printArenaColorHelper(char playerColor) const {
+  if (playerColor == 'A') {
+    cout << YELLOW << 'O' << RESET;
+  } else if (playerColor == 'V') {
+    cout << RED << 'O' << RESET;
+  } else {
+    cout << playerColor;
+  }
+}
+void board::updateArena(int moveColunm, char playerColor) {
   for (int i = ROWS - 1; i > -1; --i) {
     if (this->arena[i][moveColunm] == EMPTY) {
-      this->arena[i][moveColunm] = player;
+      this->arena[i][moveColunm] = playerColor;
       break;
     }
   }
