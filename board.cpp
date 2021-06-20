@@ -54,12 +54,10 @@ void board::printSeparator() const {
   cout << endl;
 }
 void board::updateArena(int moveColunm, char player) {
-  if (checkUpdateArena(moveColunm)) {
-    for (int i = ROWS; i > -1; --i) {
-      if (this->arena[i][moveColunm] == EMPTY) {
-        this->arena[i][moveColunm] = player;
-        break;
-      }
+  for (int i = ROWS - 1; i > -1; --i) {
+    if (this->arena[i][moveColunm] == EMPTY) {
+      this->arena[i][moveColunm] = player;
+      break;
     }
   }
 }
