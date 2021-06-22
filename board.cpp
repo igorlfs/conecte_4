@@ -10,6 +10,7 @@
 #define RESET "\033[0m"
 
 #define ROW_REQUIRED_TO_WIN 3
+#define COLUMN_REQUIRED_TO_WIN 3
 
 #include <iostream>
 using std::cout;
@@ -103,15 +104,15 @@ bool board::checkFullColunm(int moveColunm) const {
   return 1;
 }
 bool board::checkWin(char playerColor) const {
-  return (checkWinColunm(playerColor) || checkWinRow(playerColor));
+  return (checkWinRow(playerColor)) || checkWinColunm(playerColor);
 }
 bool board::checkWinRow(char playerColor) const {
-  for (int i = ROWS - 1; i > -1; --i) {
-    // You can't win by rows if your character isn't in position #3
-    if (this->arena[i][ROW_REQUIRED_TO_WIN] != playerColor) {
-      return 0;
+  for (int i = ROWS - 1; i >= 0; --i) {
+    // You can't win a row if your character isn't in it's colunm #3
+    if (this->arena[i][COLUMN_REQUIRED_TO_WIN] != playerColor) {
+      continue;
     }
-    for (int j = 0; j <= ROW_REQUIRED_TO_WIN; ++j) {
+    for (int j = 0; j <= COLUMN_REQUIRED_TO_WIN; ++j) {
       if (this->arena[i][j] == playerColor) {
         if (this->checkWinRowHelper(playerColor, i, j)) {
           return 1;
@@ -122,7 +123,7 @@ bool board::checkWinRow(char playerColor) const {
   return 0;
 }
 bool board::checkWinRowHelper(char playerColor, int i, int j) const {
-  for (int k = j; k <= j + ROW_REQUIRED_TO_WIN; ++k) {
+  for (int k = j; k <= j + COLUMN_REQUIRED_TO_WIN; ++k) {
     if (this->arena[i][k] != playerColor) {
       break;
     }
@@ -132,4 +133,21 @@ bool board::checkWinRowHelper(char playerColor, int i, int j) const {
   }
   return 0;
 }
-bool board::checkWinColunm(char playerColor) const { return 0; }
+bool board::checkWinColunm(char playerColor) const {
+  for (int j = 0; j < COLUMNS; ++j) {
+    // You can't win a colunm if your character isn't in it's row #3
+    if (this->arena[3][j] != playerColor) {
+      continue;
+    }
+    for (int i = ROWS - 1; i <= 0; ++i) {
+      // There's no need to check rows above empty ones
+      if (this->arena[i][j] == EMPTY) {
+        continue;
+      }
+      if (this->arena[i][j] == playerColor) {
+        return 0;
+      }
+    }
+  }
+  return 0;
+}
