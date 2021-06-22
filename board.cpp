@@ -56,9 +56,9 @@ void board::printSeparator() const {
 }
 void board::printArenaColorHelper(char playerColor) const {
   if (playerColor == 'A') {
-    cout << YELLOW << 'O' << RESET;
+    cout << YELLOW << "●" << RESET;
   } else if (playerColor == 'V') {
-    cout << RED << 'O' << RESET;
+    cout << RED << "●" << RESET;
   } else {
     cout << playerColor;
   }
