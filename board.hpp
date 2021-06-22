@@ -12,6 +12,7 @@ private:
   bool checkColunmOutOfBounds(int moveColunm) const;
   bool checkWinColunm(char playerColor) const;
   bool checkWinRow(char playerColor) const;
+  bool checkWinRowHelper(char playerColor, int i, int j) const;
 
 public:
   board();
