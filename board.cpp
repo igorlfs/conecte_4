@@ -98,3 +98,24 @@ bool board::checkFullColunm(int moveColunm) const {
   }
   return VALID;
 }
+bool board::checkWin(char playerColor) const {
+  return (checkWinColunm(playerColor) || checkWinRow(playerColor));
+}
+bool board::checkWinRow(char playerColor) const {
+  for (int i = 0; i < ROWS; ++i) {
+    for (int j = 0; j < 4; ++j) {
+      if (this->arena[i][j] == playerColor) {
+        for (int k = j; k < j + 4; ++k) {
+          if (this->arena[i][k] != playerColor) {
+            break;
+          }
+          if (k == j + 3) {
+            return 1;
+          }
+        }
+      }
+    }
+  }
+  return 0;
+}
+bool board::checkWinColunm(char playerColor) const { return 0; }
