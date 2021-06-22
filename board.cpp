@@ -58,7 +58,7 @@ void board::printSeparator() const {
   }
   cout << endl;
 }
-void board::printArenaColorHelper(char playerColor) const {
+void board::printArenaColorHelper(const char &playerColor) const {
   if (playerColor == 'A') {
     cout << YELLOW << "●" << RESET;
   } else if (playerColor == 'V') {
@@ -67,7 +67,7 @@ void board::printArenaColorHelper(char playerColor) const {
     cout << playerColor;
   }
 }
-void board::updateArena(int moveColunm, char playerColor) {
+void board::updateArena(const int &moveColunm, const char &playerColor) {
   for (int i = ROWS - 1; i > -1; --i) {
     if (this->arena[i][moveColunm] == EMPTY) {
       this->arena[i][moveColunm] = playerColor;
@@ -75,10 +75,10 @@ void board::updateArena(int moveColunm, char playerColor) {
     }
   }
 }
-bool board::checkUpdateArena(int moveColunm) const {
+bool board::checkUpdateArena(const int &moveColunm) const {
   return (checkColunmOutOfBounds(moveColunm) && checkFullColunm(moveColunm));
 }
-bool board::checkColunmOutOfBounds(int moveColunm) const {
+bool board::checkColunmOutOfBounds(const int &moveColunm) const {
   if (moveColunm > COLUMNS || moveColunm < 0) {
     cout << "Jogada Inválida.\n"
             "Você inseriu um número fora do intervalo de validade!\n"
@@ -88,7 +88,7 @@ bool board::checkColunmOutOfBounds(int moveColunm) const {
   }
   return 1;
 }
-bool board::checkFullColunm(int moveColunm) const {
+bool board::checkFullColunm(const int &moveColunm) const {
   for (int i = 0; i < ROWS; ++i) {
     if (moveColunm == i) {
       if (this->arena[0][moveColunm] != EMPTY) {
@@ -102,10 +102,10 @@ bool board::checkFullColunm(int moveColunm) const {
   }
   return 1;
 }
-bool board::checkWin(char playerColor) const {
+bool board::checkWin(const char &playerColor) const {
   return (checkWinColunm(playerColor) || checkWinRow(playerColor));
 }
-bool board::checkWinRow(char playerColor) const {
+bool board::checkWinRow(const char &playerColor) const {
   for (int i = ROWS - 1; i > -1; --i) {
     // You can't win by rows if your character isn't in position #3
     if (this->arena[i][ROW_REQUIRED_TO_WIN] != playerColor) {
@@ -121,7 +121,8 @@ bool board::checkWinRow(char playerColor) const {
   }
   return 0;
 }
-bool board::checkWinRowHelper(char playerColor, int i, int j) const {
+bool board::checkWinRowHelper(const char &playerColor, const int &i,
+                              const int &j) const {
   for (int k = j; k <= j + ROW_REQUIRED_TO_WIN; ++k) {
     if (this->arena[i][k] != playerColor) {
       break;
@@ -132,4 +133,4 @@ bool board::checkWinRowHelper(char playerColor, int i, int j) const {
   }
   return 0;
 }
-bool board::checkWinColunm(char playerColor) const { return 0; }
+bool board::checkWinColunm(const char &playerColor) const { return 0; }
