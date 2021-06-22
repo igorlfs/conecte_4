@@ -10,10 +10,12 @@ private:
   void printSeparator() const;
   bool checkFullColunm(const int &moveColunm) const;
   bool checkColunmOutOfBounds(const int &moveColunm) const;
-  bool checkWinColunm(const char &playerColor) const;
   bool checkWinRow(const char &playerColor) const;
   bool checkWinRowHelper(const char &playerColor, const int &i,
                          const int &j) const;
+  bool checkWinColunm(const char &playerColor) const;
+  bool checkWinColunmHelper(const char &playerColor, const int &i,
+                            const int &j) const;
 
 public:
   board();

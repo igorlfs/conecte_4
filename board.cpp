@@ -124,7 +124,7 @@ bool board::checkWinRow(const char &playerColor) const {
 }
 bool board::checkWinRowHelper(const char &playerColor, const int &i,
                               const int &j) const {
-  for (int k = j; k <= j + ROW_REQUIRED_TO_WIN; ++k) {
+  for (int k = j; k <= j + 3; ++k) {
     if (this->arena[i][k] != playerColor) {
       break;
     }
@@ -137,17 +137,30 @@ bool board::checkWinRowHelper(const char &playerColor, const int &i,
 bool board::checkWinColunm(const char &playerColor) const {
   for (int j = 0; j < COLUMNS; ++j) {
     // You can't win a colunm if your character isn't in it's row #3
-    if (this->arena[3][j] != playerColor) {
+    if (this->arena[ROW_REQUIRED_TO_WIN][j] != playerColor) {
       continue;
     }
-    for (int i = ROWS - 1; i <= 0; ++i) {
+    for (int i = ROWS - 1; i >= COLUMN_REQUIRED_TO_WIN; --i) {
       // There's no need to check rows above empty ones
       if (this->arena[i][j] == EMPTY) {
         continue;
       }
-      if (this->arena[i][j] == playerColor) {
-        return 0;
-      }
+      if (this->arena[i][j] == playerColor)
+        if (checkWinColunmHelper(playerColor, i, j)) {
+          return 1;
+        }
+    }
+  }
+  return 0;
+}
+bool board::checkWinColunmHelper(const char &playerColor, const int &i,
+                                 const int &j) const {
+  for (int k = i; k >= i - 3; --k) {
+    if (this->arena[k][j] != playerColor) {
+      break;
+    }
+    if (k == i - 3) {
+      return 1;
     }
   }
   return 0;
