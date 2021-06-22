@@ -6,14 +6,18 @@ private:
   char arena[ROWS][COLUMNS];
 
   void printHeader() const;
+  void printArenaColorHelper(char playerColor) const;
   void printSeparator() const;
   bool checkFullColunm(int moveColunm) const;
   bool checkColunmOutOfBounds(int moveColunm) const;
-  void printArenaColorHelper(char playerColor) const;
+  bool checkWinColunm(char playerColor) const;
+  bool checkWinRow(char playerColor) const;
+  bool checkWinRowHelper(char playerColor, int i, int j) const;
 
 public:
   board();
   void printArena() const;
   bool checkUpdateArena(int moveColunm) const;
   void updateArena(int moveColunm, char playerColor);
+  bool checkWin(char playerColor) const;
 };

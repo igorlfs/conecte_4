@@ -45,6 +45,10 @@ void jogue(char *jogador, board tabuleiro) {
     if (tabuleiro.checkUpdateArena(jogada) && cin.good()) {
       tabuleiro.updateArena(jogada, jogador[jogadorAtual]);
       tabuleiro.printArena();
+      if (tabuleiro.checkWin(jogador[jogadorAtual])) {
+        cout << jogadorAtual + 1 << " venceu!\n";
+        break;
+      }
       numJogadas++;
     }
   }
