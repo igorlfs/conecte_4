@@ -1,8 +1,8 @@
 #pragma once
+#define ROWS 6
+#define COLUMNS 7
 class board {
 private:
-  static const int ROWS = 6;
-  static const int COLUMNS = 7;
   char arena[ROWS][COLUMNS];
 
   void printHeader() const;
@@ -10,12 +10,14 @@ private:
   void printSeparator() const;
   bool checkFullColunm(const int &moveColunm) const;
   bool checkColunmOutOfBounds(const int &moveColunm) const;
+  bool checkWinLines(const char &playerColor) const;
   bool checkWinRow(const char &playerColor) const;
   bool checkWinRowHelper(const char &playerColor, const int &i,
                          const int &j) const;
   bool checkWinColunm(const char &playerColor) const;
   bool checkWinColunmHelper(const char &playerColor, const int &i,
                             const int &j) const;
+  bool checkWinDiagonals(const char &playerColor) const;
 
 public:
   board();

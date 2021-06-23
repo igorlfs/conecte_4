@@ -11,6 +11,7 @@
 
 #define ROW_REQUIRED_TO_WIN 3
 #define COLUMN_REQUIRED_TO_WIN 3
+#define MIN_ROW_MAIN_DIAGONAL 3
 
 #include <iostream>
 using std::cout;
@@ -104,6 +105,9 @@ bool board::checkFullColunm(const int &moveColunm) const {
   return 1;
 }
 bool board::checkWin(const char &playerColor) const {
+  return (checkWinLines(playerColor) || checkWinDiagonals(playerColor));
+}
+bool board::checkWinLines(const char &playerColor) const {
   return (checkWinRow(playerColor)) || checkWinColunm(playerColor);
 }
 bool board::checkWinRow(const char &playerColor) const {
@@ -124,11 +128,11 @@ bool board::checkWinRow(const char &playerColor) const {
 }
 bool board::checkWinRowHelper(const char &playerColor, const int &i,
                               const int &j) const {
-  for (int k = j; k <= j + 3; ++k) {
-    if (this->arena[i][k] != playerColor) {
+  for (int k = 0; k <= 3; ++k) {
+    if (this->arena[i][j + k] != playerColor) {
       break;
     }
-    if (k == j + 3) {
+    if (k == 3) {
       return 1;
     }
   }
@@ -155,12 +159,29 @@ bool board::checkWinColunm(const char &playerColor) const {
 }
 bool board::checkWinColunmHelper(const char &playerColor, const int &i,
                                  const int &j) const {
-  for (int k = i; k >= i - 3; --k) {
-    if (this->arena[k][j] != playerColor) {
+  for (int k = 0; k <= 3; ++k) {
+    if (this->arena[i - k][j] != playerColor) {
       break;
     }
-    if (k == i - 3) {
+    if (k == 3) {
       return 1;
+    }
+  }
+  return 0;
+}
+bool board::checkWinDiagonals(const char &playerColor) const {
+  for (int i = 3; i < ROWS; ++i) {
+    for (int j = 0; j < 3; ++j) {
+      if (this->arena[i - j][j] == playerColor) {
+        for (int k = 0; k <= 3; ++k) {
+          if (this->arena[i - j - k][j + k] != playerColor) {
+            break;
+          }
+          if (k == 3) {
+            return 1;
+          }
+        }
+      }
     }
   }
   return 0;
