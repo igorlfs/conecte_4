@@ -111,7 +111,6 @@ bool board::checkWinRow(const char &playerColor) const {
   for (int i = ROWS - 1; i > -1; --i) {
     // You can't win a row if your character isn't in it's column #3
     // Or else you can only fill 3 columns (either before or after)
-    // (obviously not being able to connect 4)
     // This property relies on a 6x7 arena
     if (this->arena[i][COL_REQUIRED_TO_WIN] != playerColor) {
       continue;
