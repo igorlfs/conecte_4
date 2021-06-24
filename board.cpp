@@ -174,54 +174,21 @@ bool board::checkWinDiagonals(const char &playerColor) const {
           checkWinSecondaryDiagonals(playerColor));
 }
 bool board::checkWinPrimaryDiagonals(const char &playerColor) const {
-  return (checkWinPrimaryDiagonalsA(playerColor) ||
-          checkWinPrimaryDiagonalsB(playerColor));
-}
-bool board::checkWinPrimaryDiagonalsA(const char &playerColor) const {
-  return 0;
-}
-bool board::checkWinPrimaryDiagonalsB(const char &playerColor) const {
-  return 0;
-}
-bool board::checkWinSecondaryDiagonals(const char &playerColor) const {
-  return (checkWinSecondaryDiagonalsA(playerColor) ||
-          checkWinSecondaryDiagonalsB(playerColor));
-}
-bool board::checkWinSecondaryDiagonalsA(const char &playerColor) const {
-  // You can't win if there are only 3 entries available in the diagonal
-  int minRowWorth = ROWS - 3;
-  for (int j = 3; j >= 0; --j) {
-    for (int i = minRowWorth; i < ROWS; ++i) {
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 4; j++) {
       if (this->arena[i][j] == playerColor) {
-        if (checkWinSecondaryDiagonalsAHelper(playerColor, i, j)) {
+        if (checkWinPrimaryDiagonalsHelper(playerColor, i, j)) {
           return 1;
         }
       }
     }
-    minRowWorth++;
   }
   return 0;
 }
-bool board::checkWinSecondaryDiagonalsB(const char &playerColor) const {
-  // Likewise, you need at least 4 entries in the diagonal to win
-  int maxColunmWorth = 0;
-  for (int i = 3; i < ROWS; ++i) {
-    for (int j = 0; j <= maxColunmWorth; ++j) {
-      if (this->arena[i - j][j] == playerColor) {
-        if (checkWinSecondaryDiagonalsBHelper(playerColor, i, j)) {
-          return 1;
-        }
-      }
-    }
-    maxColunmWorth++;
-  }
-  return 0;
-}
-bool board::checkWinSecondaryDiagonalsAHelper(const char &playerColor,
-                                              const int &i,
-                                              const int &j) const {
-  for (int k = 0; k <= 3; ++k) {
-    if (this->arena[i - k][j + k] != playerColor) {
+bool board::checkWinPrimaryDiagonalsHelper(const char &playerColor,
+                                           const int &i, const int &j) const {
+  for (int k = 1; k < 4; ++k) {
+    if (this->arena[i + k][j + k] != playerColor) {
       break;
     }
     if (k == 3) {
@@ -230,11 +197,23 @@ bool board::checkWinSecondaryDiagonalsAHelper(const char &playerColor,
   }
   return 0;
 }
-bool board::checkWinSecondaryDiagonalsBHelper(const char &playerColor,
-                                              const int &i,
-                                              const int &j) const {
-  for (int k = 0; k <= 3; ++k) {
-    if (this->arena[i - j - k][j + k] != playerColor) {
+bool board::checkWinSecondaryDiagonals(const char &playerColor) const {
+  // You can't win if there are only 3 entries available in the diagonal
+  for (int i = ROWS - 1; i > 2; --i) {
+    for (int j = 0; j < 4; j++) {
+      if (this->arena[i][j] == playerColor) {
+        if (checkWinSecondaryDiagonalsHelper(playerColor, i, j)) {
+          return 1;
+        }
+      }
+    }
+  }
+  return 0;
+}
+bool board::checkWinSecondaryDiagonalsHelper(const char &playerColor,
+                                             const int &i, const int &j) const {
+  for (int k = 1; k < 4; ++k) {
+    if (this->arena[i - k][j + k] != playerColor) {
       break;
     }
     if (k == 3) {

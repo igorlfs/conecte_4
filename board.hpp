@@ -19,19 +19,11 @@ private:
                          const int &j) const;
   bool checkWinDiagonals(const char &playerColor) const;
   bool checkWinPrimaryDiagonals(const char &playerColor) const;
-  bool checkWinPrimaryDiagonalsA(const char &playerColor) const;
-  bool checkWinPrimaryDiagonalsAHelper(const char &playerColor, const int &i,
-                                       const int &j) const;
-  bool checkWinPrimaryDiagonalsB(const char &playerColor) const;
-  bool checkWinPrimaryDiagonalsBHelper(const char &playerColor, const int &i,
-                                       const int &j) const;
+  bool checkWinPrimaryDiagonalsHelper(const char &playerColor, const int &i,
+                                      const int &j) const;
   bool checkWinSecondaryDiagonals(const char &playerColor) const;
-  bool checkWinSecondaryDiagonalsA(const char &playerColor) const;
-  bool checkWinSecondaryDiagonalsAHelper(const char &playerColor, const int &i,
-                                         const int &j) const;
-  bool checkWinSecondaryDiagonalsB(const char &playerColor) const;
-  bool checkWinSecondaryDiagonalsBHelper(const char &playerColor, const int &i,
-                                         const int &j) const;
+  bool checkWinSecondaryDiagonalsHelper(const char &playerColor, const int &i,
+                                        const int &j) const;
 
 public:
   board();
