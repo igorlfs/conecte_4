@@ -9,13 +9,13 @@
 
 #define COL_REQUIRED_TO_WIN 3
 #define ROW_REQUIRED_TO_WIN 3
-#define ROW_DIAGONAL ROWS - CONNECT
-#define MAX_COL_DIAGONAL COLUMNS - CONNECT
 
 #include <assert.h>
 #include <iostream>
+
 using std::cout;
 using std::endl;
+
 board::board() {
   for (int i = 0; i < ROWS; ++i) {
     for (int j = 0; j < COLUMNS; ++j) {
@@ -153,7 +153,7 @@ bool board::checkWinPrimaryDiagonals(const char &playerColor) const {
   // subtracting the number of elements you want to connect (eg, 4) from the
   // matrix's dimensions (eg, 6x7)
   for (int i = 0; i <= ROWS - CONNECT; i++) {
-    for (int j = 0; j <= COLUMNS; j++) {
+    for (int j = 0; j <= COLUMNS - CONNECT; j++) {
       if (this->arena[i][j] == playerColor) {
         if (checkWinHelper(playerColor, i, j, primary)) {
           return 1;
@@ -165,11 +165,9 @@ bool board::checkWinPrimaryDiagonals(const char &playerColor) const {
 }
 bool board::checkWinSecondaryDiagonals(const char &playerColor) const {
   // You can only connect X on a secondary diagonal if it's start is in
-  // the matrix's bottom left. More specifically, the bound are given by
-  // subtracting the number of elements you want to connect (eg, 4) from the
-  // matrix's dimensions (eg, 6x7)
-  for (int i = ROWS - 1; i > ROW_DIAGONAL; --i) {
-    for (int j = 0; j <= MAX_COL_DIAGONAL; j++) {
+  // the matrix's bottom left. Look at primary for bounds explanation.
+  for (int i = ROWS - 1; i > ROWS - CONNECT; --i) {
+    for (int j = 0; j <= COLUMNS - CONNECT; j++) {
       if (this->arena[i][j] == playerColor) {
         if (checkWinHelper(playerColor, i, j, secondary)) {
           return 1;
