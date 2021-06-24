@@ -11,14 +11,12 @@ private:
   void printSeparator() const;
   bool checkFullColunm(const int &moveColunm) const;
   bool checkColunmOutOfBounds(const int &moveColunm) const;
-  bool checkWinLines(const char &playerColor) const;
   bool checkWinCol(const char &playerColor) const;
   bool checkWinColHelper(const char &playerColor, const int &i,
                          const int &j) const;
   bool checkWinRow(const char &playerColor) const;
   bool checkWinRowHelper(const char &playerColor, const int &i,
                          const int &j) const;
-  bool checkWinDiagonals(const char &playerColor) const;
   bool checkWinPrimaryDiagonals(const char &playerColor) const;
   bool checkWinPrimaryDiagonalsHelper(const char &playerColor, const int &i,
                                       const int &j) const;

@@ -103,10 +103,9 @@ bool board::checkFullColunm(const int &moveColunm) const {
   return 1;
 }
 bool board::checkWin(const char &playerColor) const {
-  return (checkWinLines(playerColor) || checkWinDiagonals(playerColor));
-}
-bool board::checkWinLines(const char &playerColor) const {
-  return (checkWinRow(playerColor)) || checkWinCol(playerColor);
+  return (checkWinRow(playerColor) || checkWinCol(playerColor) ||
+          checkWinPrimaryDiagonals(playerColor) ||
+          checkWinSecondaryDiagonals(playerColor));
 }
 bool board::checkWinRow(const char &playerColor) const {
   for (int i = ROWS - 1; i > -1; --i) {
@@ -171,10 +170,6 @@ bool board::checkWinColHelper(const char &playerColor, const int &i,
     }
   }
   return 0;
-}
-bool board::checkWinDiagonals(const char &playerColor) const {
-  return (checkWinPrimaryDiagonals(playerColor) ||
-          checkWinSecondaryDiagonals(playerColor));
 }
 bool board::checkWinPrimaryDiagonals(const char &playerColor) const {
   // You can only connect X on a primary diagonal if it's start is in
