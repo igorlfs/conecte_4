@@ -9,7 +9,6 @@ void jogue(char *jogador, board tabuleiro);
 int main() {
   // Todo:
   // Bugs de leitura
-  // Unificar função ajudante de vitória
   // Generalizar caracteres do jogadores
   board tabuleiro;
   char jogador[2];

@@ -1,28 +1,34 @@
 #pragma once
+
 #define ROWS 6
 #define COLUMNS 7
 #define CONNECT 4
+
+enum winTypes {
+  row,
+  col,
+  primary,
+  secondary,
+};
+
 class board {
+
 private:
   char arena[ROWS][COLUMNS];
 
   void printHeader() const;
   void printArenaColorHelper(const char &playerColor) const;
   void printSeparator() const;
-  bool checkFullColunm(const int &moveColunm) const;
-  bool checkColunmOutOfBounds(const int &moveColunm) const;
-  bool checkWinCol(const char &playerColor) const;
-  bool checkWinColHelper(const char &playerColor, const int &i,
-                         const int &j) const;
+
+  bool checkFullColumn(const int &moveColunm) const;
+  bool checkColumnOutOfBounds(const int &moveColunm) const;
+
   bool checkWinRow(const char &playerColor) const;
-  bool checkWinRowHelper(const char &playerColor, const int &i,
-                         const int &j) const;
+  bool checkWinCol(const char &playerColor) const;
   bool checkWinPrimaryDiagonals(const char &playerColor) const;
-  bool checkWinPrimaryDiagonalsHelper(const char &playerColor, const int &i,
-                                      const int &j) const;
   bool checkWinSecondaryDiagonals(const char &playerColor) const;
-  bool checkWinSecondaryDiagonalsHelper(const char &playerColor, const int &i,
-                                        const int &j) const;
+  bool checkWinHelper(const char &playerColor, const int &i, const int &j,
+                      const winTypes &winType) const;
 
 public:
   board();

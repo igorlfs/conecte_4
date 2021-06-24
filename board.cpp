@@ -29,7 +29,7 @@ void board::printArena() const {
     this->printSeparator();
     for (int j = 0; j < COLUMNS; ++j) {
       this->printArenaColorHelper(this->arena[i][j]);
-      // Do not print a separator in the last colunm
+      // Do not print a separator in the last column
       if (j != COLUMNS - 1) {
         cout << BLUE " │ " << RESET;
       }
@@ -69,21 +69,21 @@ void board::printArenaColorHelper(const char &playerColor) const {
     cout << playerColor;
   }
 }
-void board::updateArena(const int &moveColunm, const char &playerColor) {
+void board::updateArena(const int &moveColumn, const char &playerColor) {
   // Assert the move is valid
-  assert(this->checkUpdateArena(moveColunm));
+  assert(this->checkUpdateArena(moveColumn));
   for (int i = ROWS - 1; i >= 0; --i) {
-    if (this->arena[i][moveColunm] == EMPTY) {
-      this->arena[i][moveColunm] = playerColor;
+    if (this->arena[i][moveColumn] == EMPTY) {
+      this->arena[i][moveColumn] = playerColor;
       break;
     }
   }
 }
-bool board::checkUpdateArena(const int &moveColunm) const {
-  return (checkColunmOutOfBounds(moveColunm) && checkFullColunm(moveColunm));
+bool board::checkUpdateArena(const int &moveColumn) const {
+  return (checkColumnOutOfBounds(moveColumn) && checkFullColumn(moveColumn));
 }
-bool board::checkColunmOutOfBounds(const int &moveColunm) const {
-  if (moveColunm > COLUMNS - 1 || moveColunm < 0) {
+bool board::checkColumnOutOfBounds(const int &moveColumn) const {
+  if (moveColumn > COLUMNS - 1 || moveColumn < 0) {
     cout << "Jogada Inválida.\n"
             "Você inseriu um número inválido!\n"
             "Insira um número de 1 a 7."
@@ -92,8 +92,8 @@ bool board::checkColunmOutOfBounds(const int &moveColunm) const {
   }
   return 1;
 }
-bool board::checkFullColunm(const int &moveColunm) const {
-  if (this->arena[0][moveColunm] != EMPTY) {
+bool board::checkFullColumn(const int &moveColumn) const {
+  if (this->arena[0][moveColumn] != EMPTY) {
     cout << "Jogada Inválida.\n"
             "Você tentou jogar numa coluna cheia!\n"
             "Escolha outra coluna."
@@ -109,17 +109,17 @@ bool board::checkWin(const char &playerColor) const {
 }
 bool board::checkWinRow(const char &playerColor) const {
   for (int i = ROWS - 1; i > -1; --i) {
-    // You can't win a row if your character isn't in it's colunm #3
-    // Or else you can only fill 3 colunms (either before or after)
+    // You can't win a row if your character isn't in it's column #3
+    // Or else you can only fill 3 columns (either before or after)
     // (obviously not being able to connect 4)
     // This property relies on a 6x7 arena
     if (this->arena[i][COL_REQUIRED_TO_WIN] != playerColor) {
       continue;
     }
-    // Likewise, there's no need to check further than colunm 3
+    // Likewise, there's no need to check further than column 3
     for (int j = 0; j <= COL_REQUIRED_TO_WIN; ++j) {
       if (this->arena[i][j] == playerColor) {
-        if (this->checkWinRowHelper(playerColor, i, j)) {
+        if (this->checkWinHelper(playerColor, i, j, row)) {
           return 1;
         }
       }
@@ -127,21 +127,9 @@ bool board::checkWinRow(const char &playerColor) const {
   }
   return 0;
 }
-bool board::checkWinRowHelper(const char &playerColor, const int &i,
-                              const int &j) const {
-  for (int k = 1; k < CONNECT; ++k) {
-    if (this->arena[i][j + k] != playerColor) {
-      break;
-    }
-    if (k == CONNECT - 1) {
-      return 1;
-    }
-  }
-  return 0;
-}
 bool board::checkWinCol(const char &playerColor) const {
   for (int j = 0; j < COLUMNS; ++j) {
-    // You can't win a colunm if your character isn't in it's row #3
+    // You can't win a column if your character isn't in it's row #3
     // Or else you can only fill 3 rows
     if (this->arena[ROW_REQUIRED_TO_WIN][j] != playerColor) {
       continue;
@@ -152,21 +140,9 @@ bool board::checkWinCol(const char &playerColor) const {
         continue;
       }
       if (this->arena[i][j] == playerColor)
-        if (checkWinColHelper(playerColor, i, j)) {
+        if (checkWinHelper(playerColor, i, j, col)) {
           return 1;
         }
-    }
-  }
-  return 0;
-}
-bool board::checkWinColHelper(const char &playerColor, const int &i,
-                              const int &j) const {
-  for (int k = 1; k < CONNECT; ++k) {
-    if (this->arena[i - k][j] != playerColor) {
-      break;
-    }
-    if (k == CONNECT - 1) {
-      return 1;
     }
   }
   return 0;
@@ -176,25 +152,13 @@ bool board::checkWinPrimaryDiagonals(const char &playerColor) const {
   // the matrix's top left. More specifically, the bounds are given by
   // subtracting the number of elements you want to connect (eg, 4) from the
   // matrix's dimensions (eg, 6x7)
-  for (int i = 0; i <= ROW_DIAGONAL; i++) {
-    for (int j = 0; j <= MAX_COL_DIAGONAL; j++) {
+  for (int i = 0; i <= ROWS - CONNECT; i++) {
+    for (int j = 0; j <= COLUMNS; j++) {
       if (this->arena[i][j] == playerColor) {
-        if (checkWinPrimaryDiagonalsHelper(playerColor, i, j)) {
+        if (checkWinHelper(playerColor, i, j, primary)) {
           return 1;
         }
       }
-    }
-  }
-  return 0;
-}
-bool board::checkWinPrimaryDiagonalsHelper(const char &playerColor,
-                                           const int &i, const int &j) const {
-  for (int k = 1; k < CONNECT; ++k) {
-    if (this->arena[i + k][j + k] != playerColor) {
-      break;
-    }
-    if (k == CONNECT - 1) {
-      return 1;
     }
   }
   return 0;
@@ -207,7 +171,7 @@ bool board::checkWinSecondaryDiagonals(const char &playerColor) const {
   for (int i = ROWS - 1; i > ROW_DIAGONAL; --i) {
     for (int j = 0; j <= MAX_COL_DIAGONAL; j++) {
       if (this->arena[i][j] == playerColor) {
-        if (checkWinSecondaryDiagonalsHelper(playerColor, i, j)) {
+        if (checkWinHelper(playerColor, i, j, secondary)) {
           return 1;
         }
       }
@@ -215,10 +179,19 @@ bool board::checkWinSecondaryDiagonals(const char &playerColor) const {
   }
   return 0;
 }
-bool board::checkWinSecondaryDiagonalsHelper(const char &playerColor,
-                                             const int &i, const int &j) const {
+bool board::checkWinHelper(const char &playerColor, const int &i, const int &j,
+                           const winTypes &winType) const {
   for (int k = 1; k < CONNECT; ++k) {
-    if (this->arena[i - k][j + k] != playerColor) {
+    if (winType == row && this->arena[i][j + k] != playerColor) {
+      break;
+    }
+    if (winType == col && this->arena[i - k][j] != playerColor) {
+      break;
+    }
+    if (winType == primary && this->arena[i + k][j + k] != playerColor) {
+      break;
+    }
+    if (winType == secondary && this->arena[i - k][j + k] != playerColor) {
       break;
     }
     if (k == CONNECT - 1) {
