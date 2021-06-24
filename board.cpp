@@ -13,6 +13,7 @@
 #define COLUMN_REQUIRED_TO_WIN 3
 #define MIN_ROW_MAIN_DIAGONAL 3
 
+#include <assert.h>
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -26,11 +27,10 @@ board::board() {
 void board::printArena() const {
   this->printHeader();
   for (int i = 0; i < ROWS; ++i) {
-    if (i != ROWS) {
-      this->printSeparator();
-    }
+    this->printSeparator();
     for (int j = 0; j < COLUMNS; ++j) {
       this->printArenaColorHelper(this->arena[i][j]);
+      // Do not print a separator in the last colunm
       if (j != COLUMNS - 1) {
         cout << BLUE " │ " << RESET;
       }
@@ -40,7 +40,8 @@ void board::printArena() const {
   cout << endl;
 }
 void board::printHeader() const {
-  for (int i = 1; i <= COLUMNS; ++i) {
+  // Print natural counting header (starting at 1)
+  for (int i = 1; i < COLUMNS + 1; ++i) {
     cout << i;
     if (i != COLUMNS) {
       cout << BLUE << " │ " << RESET;
@@ -70,6 +71,8 @@ void board::printArenaColorHelper(const char &playerColor) const {
   }
 }
 void board::updateArena(const int &moveColunm, const char &playerColor) {
+  // Assert the move is valid
+  assert(this->checkUpdateArena(moveColunm));
   for (int i = ROWS - 1; i >= 0; --i) {
     if (this->arena[i][moveColunm] == EMPTY) {
       this->arena[i][moveColunm] = playerColor;
@@ -109,9 +112,13 @@ bool board::checkWinLines(const char &playerColor) const {
 bool board::checkWinRow(const char &playerColor) const {
   for (int i = ROWS - 1; i > -1; --i) {
     // You can't win a row if your character isn't in it's colunm #3
+    // Or else you can only fill 3 colunms (either before or after)
+    // (obviously not being able to connect 4)
+    // This property relies on a 6x7 arena
     if (this->arena[i][COLUMN_REQUIRED_TO_WIN] != playerColor) {
       continue;
     }
+    // Likewise, there's no need to check further than colunm 3
     for (int j = 0; j <= COLUMN_REQUIRED_TO_WIN; ++j) {
       if (this->arena[i][j] == playerColor) {
         if (this->checkWinRowHelper(playerColor, i, j)) {
