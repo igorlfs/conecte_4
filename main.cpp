@@ -41,9 +41,11 @@ void jogue(char *jogador, board tabuleiro) {
     int jogadorAtual = numJogadas % 2;
     cout << "Vez do jogador " << jogadorAtual + 1 << ".\nEscolha uma coluna: ";
     int jogada;
+    // Human counting is read (ie, starting at 1)
+    // Later converted to computer counting (starting at 0)
     cin >> jogada;
-    if (tabuleiro.checkUpdateArena(jogada) && cin.good()) {
-      tabuleiro.updateArena(jogada, jogador[jogadorAtual]);
+    if (tabuleiro.checkUpdateArena(jogada - 1) && cin.good()) {
+      tabuleiro.updateArena(jogada - 1, jogador[jogadorAtual]);
       tabuleiro.printArena();
       if (tabuleiro.checkWin(jogador[jogadorAtual])) {
         cout << jogadorAtual + 1 << " venceu!\n";

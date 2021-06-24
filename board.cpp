@@ -40,9 +40,9 @@ void board::printArena() const {
   cout << endl;
 }
 void board::printHeader() const {
-  for (int i = 0; i < COLUMNS; ++i) {
+  for (int i = 1; i <= COLUMNS; ++i) {
     cout << i;
-    if (i != COLUMNS - 1) {
+    if (i != COLUMNS) {
       cout << BLUE << " │ " << RESET;
     }
   }
@@ -70,7 +70,7 @@ void board::printArenaColorHelper(const char &playerColor) const {
   }
 }
 void board::updateArena(const int &moveColunm, const char &playerColor) {
-  for (int i = ROWS - 1; i > -1; --i) {
+  for (int i = ROWS - 1; i >= 0; --i) {
     if (this->arena[i][moveColunm] == EMPTY) {
       this->arena[i][moveColunm] = playerColor;
       break;
@@ -81,26 +81,22 @@ bool board::checkUpdateArena(const int &moveColunm) const {
   return (checkColunmOutOfBounds(moveColunm) && checkFullColunm(moveColunm));
 }
 bool board::checkColunmOutOfBounds(const int &moveColunm) const {
-  if (moveColunm > COLUMNS || moveColunm < 0) {
+  if (moveColunm > COLUMNS - 1 || moveColunm < 0) {
     cout << "Jogada Inválida.\n"
-            "Você inseriu um número fora do intervalo de validade!\n"
-            "Insira um número de 0 a 6"
+            "Você inseriu um número inválido!\n"
+            "Insira um número de 1 a 7."
          << endl;
     return 0;
   }
   return 1;
 }
 bool board::checkFullColunm(const int &moveColunm) const {
-  for (int i = 0; i < ROWS; ++i) {
-    if (moveColunm == i) {
-      if (this->arena[0][moveColunm] != EMPTY) {
-        cout << "Jogada Inválida.\n"
-                "Você tentou jogar numa coluna cheia!\n"
-                "Escolha outra coluna"
-             << endl;
-        return 0;
-      }
-    }
+  if (this->arena[0][moveColunm] != EMPTY) {
+    cout << "Jogada Inválida.\n"
+            "Você tentou jogar numa coluna cheia!\n"
+            "Escolha outra coluna."
+         << endl;
+    return 0;
   }
   return 1;
 }
@@ -183,6 +179,7 @@ bool board::checkWinSecondaryDiagonals(const char &playerColor) const {
       }
     }
   }
+  // You can't win if there are only 3 entries available in the diagonal
   int minRowWorth = ROWS - 3;
   for (int j = 3; j >= 0; --j) {
     for (int i = minRowWorth; i < ROWS; ++i) {
