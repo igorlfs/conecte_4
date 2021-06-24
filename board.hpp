@@ -11,20 +11,26 @@ private:
   bool checkFullColunm(const int &moveColunm) const;
   bool checkColunmOutOfBounds(const int &moveColunm) const;
   bool checkWinLines(const char &playerColor) const;
-  bool checkWinColunm(const char &playerColor) const;
-  bool checkWinColunmHelper(const char &playerColor, const int &i,
-                            const int &j) const;
+  bool checkWinCol(const char &playerColor) const;
+  bool checkWinColHelper(const char &playerColor, const int &i,
+                         const int &j) const;
   bool checkWinRow(const char &playerColor) const;
   bool checkWinRowHelper(const char &playerColor, const int &i,
                          const int &j) const;
   bool checkWinDiagonals(const char &playerColor) const;
   bool checkWinPrimaryDiagonals(const char &playerColor) const;
-  bool checkWinPrimaryDiagonalsHelper(const char &playerColor, const int &i,
-                                      const int &j) const;
+  bool checkWinPrimaryDiagonalsA(const char &playerColor) const;
+  bool checkWinPrimaryDiagonalsAHelper(const char &playerColor, const int &i,
+                                       const int &j) const;
+  bool checkWinPrimaryDiagonalsB(const char &playerColor) const;
+  bool checkWinPrimaryDiagonalsBHelper(const char &playerColor, const int &i,
+                                       const int &j) const;
   bool checkWinSecondaryDiagonals(const char &playerColor) const;
-  bool checkWinSecondaryDiagonalsHelper(const char &playerColor, const int &i,
-                                        const int &j) const;
-  bool checkWinSecondaryDiagonalsHelper2(const char &playerColor, const int &i,
+  bool checkWinSecondaryDiagonalsA(const char &playerColor) const;
+  bool checkWinSecondaryDiagonalsAHelper(const char &playerColor, const int &i,
+                                         const int &j) const;
+  bool checkWinSecondaryDiagonalsB(const char &playerColor) const;
+  bool checkWinSecondaryDiagonalsBHelper(const char &playerColor, const int &i,
                                          const int &j) const;
 
 public:

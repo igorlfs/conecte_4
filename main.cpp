@@ -9,7 +9,8 @@ void jogue(char *jogador, board tabuleiro);
 int main() {
   // Todo:
   // Bugs de leitura
-  // Checar condição de vitória
+  // Checar condição de vitória diagonais primárias
+  // Generalizar caracteres do jogadores
   board tabuleiro;
   char jogador[2];
   jogador[0] = leJogador();
