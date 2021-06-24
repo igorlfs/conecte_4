@@ -1,15 +1,21 @@
 #include "board.hpp"
+
 #include <iostream>
+#include <string>
+
 using std::cin;
 using std::cout;
+using std::endl;
+using std::getline;
+using std::string;
+
 #define MAX_JOGADAS 42
+
 char leJogador();
 char outroJogador(char jogador1);
 void jogue(char *jogador, board tabuleiro);
+
 int main() {
-  // Todo:
-  // Bugs de leitura
-  // Generalizar caracteres do jogadores
   board tabuleiro;
   char jogador[2];
   jogador[0] = leJogador();
@@ -21,10 +27,15 @@ int main() {
 char leJogador() {
   char jogador;
   do {
-    cout << "Escolha sua cor:\n"
-            "(A) para Amarelo\n"
-            "(V) para Vermelho\n";
-    cin >> jogador;
+    string input;
+    cout << "Escolha sua cor:\n(" << COLOR_1 << ") para Amarelo\n(" << COLOR_2
+         << ") para Vermelho\n";
+    getline(cin, input);
+    if (!input.find(COLOR_1)) {
+      jogador = input[input.find(COLOR_1)];
+    } else if (!input.find(COLOR_2)) {
+      jogador = input[input.find(COLOR_2)];
+    }
   } while (jogador != 'A' && jogador != 'V');
   return jogador;
 }
@@ -39,7 +50,13 @@ void jogue(char *jogador, board tabuleiro) {
   int numJogadas = 0;
   while (numJogadas < MAX_JOGADAS) {
     int jogadorAtual = numJogadas % 2;
-    cout << "Vez do jogador " << jogadorAtual + 1 << ".\nEscolha uma coluna: ";
+    cout << "Vez do jogador " << jogadorAtual + 1 << " ";
+    if (jogador[jogadorAtual] == COLOR_1) {
+      cout << '(' << YELLOW << "●" << RESET << ')';
+    } else {
+      cout << '(' << RED << "●" << RESET << ')';
+    }
+    cout << endl << "Escolha uma coluna: ";
     int jogada;
     // Human counting is read (ie, starting at 1)
     // Later converted to computer counting (starting at 0)
@@ -52,6 +69,9 @@ void jogue(char *jogador, board tabuleiro) {
         break;
       }
       numJogadas++;
+      if (numJogadas == MAX_JOGADAS) {
+        cout << "O jogo empatou!" << endl;
+      }
     }
   }
 }

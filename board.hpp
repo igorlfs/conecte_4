@@ -3,7 +3,11 @@
 #define ROWS 6
 #define COLUMNS 7
 #define CONNECT 4
-
+#define YELLOW "\033[33m"
+#define RED "\033[31m"
+#define RESET "\033[0m" // prevents printing everything the same color
+#define COLOR_1 'A'
+#define COLOR_2 'V'
 enum winTypes {
   row,
   col,

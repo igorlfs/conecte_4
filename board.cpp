@@ -1,9 +1,6 @@
 #include "board.hpp"
 
-#define RED "\033[31m"
-#define YELLOW "\033[33m"
 #define BLUE "\033[34m"
-#define RESET "\033[0m" // prevents printing everything the same color
 
 #define EMPTY ' '
 
@@ -61,9 +58,9 @@ void board::printSeparator() const {
   cout << endl;
 }
 void board::printArenaColorHelper(const char &playerColor) const {
-  if (playerColor == 'A') {
+  if (playerColor == COLOR_1) {
     cout << YELLOW << "●" << RESET;
-  } else if (playerColor == 'V') {
+  } else if (playerColor == COLOR_2) {
     cout << RED << "●" << RESET;
   } else {
     cout << playerColor;
