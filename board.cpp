@@ -111,7 +111,7 @@ bool board::checkWinLines(const char &playerColor) const {
   return (checkWinRow(playerColor)) || checkWinColunm(playerColor);
 }
 bool board::checkWinRow(const char &playerColor) const {
-  for (int i = ROWS - 1; i >= 0; --i) {
+  for (int i = ROWS - 1; i > -1; --i) {
     // You can't win a row if your character isn't in it's colunm #3
     if (this->arena[i][COLUMN_REQUIRED_TO_WIN] != playerColor) {
       continue;
@@ -170,19 +170,57 @@ bool board::checkWinColunmHelper(const char &playerColor, const int &i,
   return 0;
 }
 bool board::checkWinDiagonals(const char &playerColor) const {
+  return (checkWinPrimaryDiagonals(playerColor) ||
+          checkWinSecondaryDiagonals(playerColor));
+}
+bool board::checkWinSecondaryDiagonals(const char &playerColor) const {
   for (int i = 3; i < ROWS; ++i) {
     for (int j = 0; j < 3; ++j) {
       if (this->arena[i - j][j] == playerColor) {
-        for (int k = 0; k <= 3; ++k) {
-          if (this->arena[i - j - k][j + k] != playerColor) {
-            break;
-          }
-          if (k == 3) {
-            return 1;
-          }
+        if (checkWinSecondaryDiagonalsHelper(playerColor, i, j)) {
+          return 1;
         }
       }
     }
   }
+  int minRowWorth = ROWS - 3;
+  for (int j = 3; j >= 0; --j) {
+    for (int i = minRowWorth; i < ROWS; ++i) {
+      if (this->arena[i][j] == playerColor) {
+        if (checkWinSecondaryDiagonalsHelper2(playerColor, i, j)) {
+          return 1;
+        }
+      }
+    }
+    minRowWorth++;
+  }
+  return 0;
+}
+bool board::checkWinSecondaryDiagonalsHelper(const char &playerColor,
+                                             const int &i, const int &j) const {
+  for (int k = 0; k <= 3; ++k) {
+    if (this->arena[i - j - k][j + k] != playerColor) {
+      break;
+    }
+    if (k == 3) {
+      return 1;
+    }
+  }
+  return 0;
+}
+bool board::checkWinSecondaryDiagonalsHelper2(const char &playerColor,
+                                              const int &i,
+                                              const int &j) const {
+  for (int k = 0; k <= 3; ++k) {
+    if (this->arena[i - k][j + k] != playerColor) {
+      break;
+    }
+    if (k == 3) {
+      return 1;
+    }
+  }
+  return 0;
+}
+bool board::checkWinPrimaryDiagonals(const char &playerColor) const {
   return 0;
 }

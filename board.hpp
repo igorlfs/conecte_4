@@ -11,13 +11,21 @@ private:
   bool checkFullColunm(const int &moveColunm) const;
   bool checkColunmOutOfBounds(const int &moveColunm) const;
   bool checkWinLines(const char &playerColor) const;
-  bool checkWinRow(const char &playerColor) const;
-  bool checkWinRowHelper(const char &playerColor, const int &i,
-                         const int &j) const;
   bool checkWinColunm(const char &playerColor) const;
   bool checkWinColunmHelper(const char &playerColor, const int &i,
                             const int &j) const;
+  bool checkWinRow(const char &playerColor) const;
+  bool checkWinRowHelper(const char &playerColor, const int &i,
+                         const int &j) const;
   bool checkWinDiagonals(const char &playerColor) const;
+  bool checkWinPrimaryDiagonals(const char &playerColor) const;
+  bool checkWinPrimaryDiagonalsHelper(const char &playerColor, const int &i,
+                                      const int &j) const;
+  bool checkWinSecondaryDiagonals(const char &playerColor) const;
+  bool checkWinSecondaryDiagonalsHelper(const char &playerColor, const int &i,
+                                        const int &j) const;
+  bool checkWinSecondaryDiagonalsHelper2(const char &playerColor, const int &i,
+                                         const int &j) const;
 
 public:
   board();
