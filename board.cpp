@@ -7,6 +7,11 @@
 
 #define EMPTY ' '
 
+#define COL_REQUIRED_TO_WIN 3
+#define ROW_REQUIRED_TO_WIN 3
+#define MAX_ROW_PRIMARY_DIAGONAL ROWS - CONNECT
+#define MAX_COL_PRIMARY_DIAGONAL COLUMNS - CONNECT
+
 #include <assert.h>
 #include <iostream>
 using std::cout;
@@ -104,17 +109,16 @@ bool board::checkWinLines(const char &playerColor) const {
   return (checkWinRow(playerColor)) || checkWinCol(playerColor);
 }
 bool board::checkWinRow(const char &playerColor) const {
-#define COLUMN_REQUIRED_TO_WIN 3
   for (int i = ROWS - 1; i > -1; --i) {
     // You can't win a row if your character isn't in it's colunm #3
     // Or else you can only fill 3 colunms (either before or after)
     // (obviously not being able to connect 4)
     // This property relies on a 6x7 arena
-    if (this->arena[i][COLUMN_REQUIRED_TO_WIN] != playerColor) {
+    if (this->arena[i][COL_REQUIRED_TO_WIN] != playerColor) {
       continue;
     }
     // Likewise, there's no need to check further than colunm 3
-    for (int j = 0; j <= COLUMN_REQUIRED_TO_WIN; ++j) {
+    for (int j = 0; j <= COL_REQUIRED_TO_WIN; ++j) {
       if (this->arena[i][j] == playerColor) {
         if (this->checkWinRowHelper(playerColor, i, j)) {
           return 1;
@@ -126,7 +130,7 @@ bool board::checkWinRow(const char &playerColor) const {
 }
 bool board::checkWinRowHelper(const char &playerColor, const int &i,
                               const int &j) const {
-  for (int k = 0; k <= 3; ++k) {
+  for (int k = 1; k < 4; ++k) {
     if (this->arena[i][j + k] != playerColor) {
       break;
     }
@@ -137,10 +141,9 @@ bool board::checkWinRowHelper(const char &playerColor, const int &i,
   return 0;
 }
 bool board::checkWinCol(const char &playerColor) const {
-#define ROW_REQUIRED_TO_WIN 3
   for (int j = 0; j < COLUMNS; ++j) {
     // You can't win a colunm if your character isn't in it's row #3
-    // Or else you can only fill 3 rows (either below or above)
+    // Or else you can only fill 3 rows
     if (this->arena[ROW_REQUIRED_TO_WIN][j] != playerColor) {
       continue;
     }
@@ -159,11 +162,11 @@ bool board::checkWinCol(const char &playerColor) const {
 }
 bool board::checkWinColHelper(const char &playerColor, const int &i,
                               const int &j) const {
-  for (int k = 0; k <= 3; ++k) {
+  for (int k = 1; k < CONNECT; ++k) {
     if (this->arena[i - k][j] != playerColor) {
       break;
     }
-    if (k == 3) {
+    if (k == CONNECT - 1) {
       return 1;
     }
   }
@@ -174,8 +177,12 @@ bool board::checkWinDiagonals(const char &playerColor) const {
           checkWinSecondaryDiagonals(playerColor));
 }
 bool board::checkWinPrimaryDiagonals(const char &playerColor) const {
-  for (int i = 0; i < 3; i++) {
-    for (int j = 0; j < 4; j++) {
+  // You can only connect 4 on a primary diagonal if it's start is in
+  // the matrix's top left. More specifically, the bounds are given by
+  // subtracting the number of elements you want to connect (eg, 4) from the
+  // matrix's dimensions (eg, 6x7)
+  for (int i = 0; i <= MAX_ROW_PRIMARY_DIAGONAL; i++) {
+    for (int j = 0; j <= MAX_COL_PRIMARY_DIAGONAL; j++) {
       if (this->arena[i][j] == playerColor) {
         if (checkWinPrimaryDiagonalsHelper(playerColor, i, j)) {
           return 1;
@@ -198,7 +205,6 @@ bool board::checkWinPrimaryDiagonalsHelper(const char &playerColor,
   return 0;
 }
 bool board::checkWinSecondaryDiagonals(const char &playerColor) const {
-  // You can't win if there are only 3 entries available in the diagonal
   for (int i = ROWS - 1; i > 2; --i) {
     for (int j = 0; j < 4; j++) {
       if (this->arena[i][j] == playerColor) {

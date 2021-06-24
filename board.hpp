@@ -1,6 +1,7 @@
 #pragma once
 #define ROWS 6
 #define COLUMNS 7
+#define CONNECT 4
 class board {
 private:
   char arena[ROWS][COLUMNS];
