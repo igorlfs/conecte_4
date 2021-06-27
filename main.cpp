@@ -57,10 +57,12 @@ void jogue(char *jogador, board tabuleiro) {
       cout << '(' << RED << "●" << RESET << ')';
     }
     cout << endl << "Escolha uma coluna: ";
+    string input;
     int jogada;
     // Human counting is read (ie, starting at 1)
     // Later converted to computer counting (starting at 0)
-    cin >> jogada;
+    getline(cin, input);
+    jogada = stoi(input);
     if (tabuleiro.checkUpdateArena(jogada - 1) && cin.good()) {
       tabuleiro.updateArena(jogada - 1, jogador[jogadorAtual]);
       tabuleiro.printArena();

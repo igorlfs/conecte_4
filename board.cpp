@@ -1,7 +1,5 @@
 #include "board.hpp"
 
-#define BLUE "\033[34m"
-
 #define EMPTY ' '
 
 #define COL_REQUIRED_TO_WIN 3
@@ -59,9 +57,9 @@ void board::printSeparator() const {
 }
 void board::printArenaColorHelper(const char &playerColor) const {
   if (playerColor == COLOR_1) {
-    cout << YELLOW << "●" << RESET;
+    cout << YELLOW << BALL << RESET;
   } else if (playerColor == COLOR_2) {
-    cout << RED << "●" << RESET;
+    cout << RED << BALL << RESET;
   } else {
     cout << playerColor;
   }
