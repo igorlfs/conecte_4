@@ -1,15 +1,19 @@
-#pragma once
+#ifndef BOARD_H
+#define BOARD_H
 
+// Colors
 #define YELLOW "\033[33m"
 #define RED "\033[31m"
 #define BLUE "\033[34m"
-#define RESET "\033[0m" // prevents printing everything the same color
+#define RESET "\033[0m"
 
-#define CHAR_YELLOW 'A'
-#define CHAR_RED 'V'
-
+// Special characters
 #define BALL "⬤"
 
+static constexpr char CHAR_YELLOW = 'A';
+static constexpr char CHAR_RED = 'V';
+
+namespace Board {
 enum winTypes {
     row,
     col,
@@ -17,7 +21,7 @@ enum winTypes {
     sec,
 };
 
-class board {
+class grid {
   public:
     static constexpr int ROWS = 6;
     static constexpr int COLUMNS = 7;
@@ -26,7 +30,7 @@ class board {
 
     static constexpr char EMPTY = ' ';
 
-    board();
+    grid();
     void printArena() const;
     bool checkUpdateArena(const int &moveColunm) const;
     void updateArena(const int &moveColunm, const char &playerColor);
@@ -54,3 +58,5 @@ class board {
     bool checkWinHelper(const char &playerColor, const int &i, const int &j,
                         const winTypes &winType) const;
 };
+} // namespace Board
+#endif

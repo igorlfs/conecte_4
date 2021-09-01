@@ -8,15 +8,15 @@
 using namespace std;
 
 char readPlayer();
-void jogue(char *jogador, board tabuleiro);
+void play(char *jogador, Board::grid tabuleiro);
 
 int main() {
-    board grid;
-    char jogador[2];
+    Board::grid grid;
+    char player[2];
 
-    jogador[0] = readPlayer();
-    (jogador[0] == 'A') ? jogador[1] = 'V' : jogador[1] = 'A';
-    jogue(jogador, grid);
+    player[0] = readPlayer();
+    (player[0] == 'A') ? player[1] = 'V' : player[1] = 'A';
+    play(player, grid);
     return 0;
 }
 
@@ -56,35 +56,30 @@ chooseColorAgain:
     }
 }
 
-void jogue(char *jogador, board tabuleiro) {
-    int numJogadas = 0;
+void play(char *player, Board::grid grid) {
+    int numMoves = 0;
 
-    while (numJogadas < board::MAX_JOGADAS) {
-        int jogadorAtual = numJogadas % 2;
-        cout << "Vez do jogador " << jogadorAtual + 1 << " ";
-        if (jogador[jogadorAtual] == CHAR_YELLOW) {
-            cout << '(' << YELLOW << BALL << RESET << ')';
-        } else {
-            cout << '(' << RED << BALL << RESET << ')';
-        }
+    while (numMoves < Board::grid::MAX_JOGADAS) {
+        int currentPlayer = numMoves % 2;
+        cout << "Vez do jogador " << currentPlayer + 1 << " ";
+        (player[currentPlayer] == CHAR_YELLOW)
+            ? cout << '(' << YELLOW << CHAR_YELLOW << RESET << ')'
+            : cout << '(' << RED << CHAR_RED << RESET << ')';
         cout << endl << "Escolha uma coluna: ";
         string input;
         int jogada;
-        // Human counting is read (ie, starting at 1)
-        // Later converted to computer counting (starting at 0)
         getline(cin, input);
         jogada = stoi(input);
-        if (tabuleiro.checkUpdateArena(jogada - 1) && cin.good()) {
-            tabuleiro.updateArena(jogada - 1, jogador[jogadorAtual]);
-            tabuleiro.printArena();
-            if (tabuleiro.checkWin(jogador[jogadorAtual])) {
-                cout << jogadorAtual + 1 << " venceu!\n";
-                break;
+        if (grid.checkUpdateArena(jogada - 1) && cin.good()) {
+            grid.updateArena(jogada - 1, player[currentPlayer]);
+            grid.printArena();
+            if (grid.checkWin(player[currentPlayer])) {
+                cout << currentPlayer + 1 << " venceu!\n";
+                return;
             }
-            numJogadas++;
-            if (numJogadas == board::MAX_JOGADAS) {
+            numMoves++;
+            if (numMoves == Board::grid::MAX_JOGADAS)
                 cout << "O jogo empatou!" << endl;
-            }
         }
     }
 }

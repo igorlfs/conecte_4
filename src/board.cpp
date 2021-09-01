@@ -3,14 +3,14 @@
 #include <assert.h>
 #include <iostream>
 
-using namespace std;
+using namespace Board;
 
-board::board() {
+grid::grid() {
     for (int i = 0; i < ROWS; ++i)
         for (int j = 0; j < COLUMNS; ++j) this->arena[i][j] = EMPTY;
     this->printArena();
 }
-void board::printArena() const {
+void grid::printArena() const {
     this->printHeader();
     for (int i = 0; i < ROWS; ++i) {
         this->printSeparator();
@@ -23,7 +23,7 @@ void board::printArena() const {
     std::cout.put('\n');
 }
 
-void board::printHeader() const {
+void grid::printHeader() const {
     for (int i = 1; i < COLUMNS + 1; ++i) {
         std::cout << i;
         if (i != COLUMNS) std::cout << BLUE << " │ " << RESET;
@@ -31,7 +31,7 @@ void board::printHeader() const {
     std::cout.put('\n');
 }
 
-void board::printSeparator() const {
+void grid::printSeparator() const {
     for (int i = 0; i < COLUMNS; ++i) {
         if (i == 0)
             std::cout << BLUE << "──┼" << RESET;
@@ -43,7 +43,7 @@ void board::printSeparator() const {
     std::cout.put('\n');
 }
 
-void board::printArenaColorHelper(const char &playerColor) const {
+void grid::printArenaColorHelper(const char &playerColor) const {
     if (playerColor == CHAR_YELLOW)
         std::cout << YELLOW << BALL << RESET;
     else if (playerColor == CHAR_RED)
@@ -52,7 +52,7 @@ void board::printArenaColorHelper(const char &playerColor) const {
         std::cout << playerColor;
 }
 
-void board::updateArena(const int &moveColumn, const char &playerColor) {
+void grid::updateArena(const int &moveColumn, const char &playerColor) {
     assert(this->checkUpdateArena(moveColumn));
     for (int i = ROWS - 1; i >= 0; --i) {
         if (this->arena[i][moveColumn] == EMPTY) {
@@ -62,11 +62,11 @@ void board::updateArena(const int &moveColumn, const char &playerColor) {
     }
 }
 
-bool board::checkUpdateArena(const int &moveColumn) const {
+bool grid::checkUpdateArena(const int &moveColumn) const {
     return (checkColumnOutOfBounds(moveColumn) && checkFullColumn(moveColumn));
 }
 
-bool board::checkColumnOutOfBounds(const int &moveColumn) const {
+bool grid::checkColumnOutOfBounds(const int &moveColumn) const {
     if ((moveColumn > COLUMNS - 1) || (moveColumn < 0)) {
         std::cout << "Jogada Inválida.\n"
                      "Você inseriu um número inválido!\n"
@@ -76,7 +76,7 @@ bool board::checkColumnOutOfBounds(const int &moveColumn) const {
     return 1;
 }
 
-bool board::checkFullColumn(const int &moveColumn) const {
+bool grid::checkFullColumn(const int &moveColumn) const {
     if (this->arena[0][moveColumn] != EMPTY) {
         std::cout << "Jogada Inválida.\n"
                      "Você tentou jogar numa coluna cheia!\n"
@@ -86,13 +86,13 @@ bool board::checkFullColumn(const int &moveColumn) const {
     return 1;
 }
 
-bool board::checkWin(const char &playerColor) const {
+bool grid::checkWin(const char &playerColor) const {
     return (checkWinRow(playerColor) || checkWinCol(playerColor) ||
             checkWinPrimaryDiagonals(playerColor) ||
             checkWinSecondaryDiagonals(playerColor));
 }
 
-bool board::checkWinRow(const char &playerColor) const {
+bool grid::checkWinRow(const char &playerColor) const {
     for (int i = ROWS - 1; i > -1; --i) {
         // You can't win a row if your character isn't in it's column #3
         // Or else you can only fill 3 columns (either before or after)
@@ -108,7 +108,7 @@ bool board::checkWinRow(const char &playerColor) const {
     return 0;
 }
 
-bool board::checkWinCol(const char &playerColor) const {
+bool grid::checkWinCol(const char &playerColor) const {
     for (int j = 0; j < COLUMNS; ++j) {
         // You can't win a column if your character isn't in it's row #3
         // Or else you can only fill 3 rows
@@ -124,7 +124,7 @@ bool board::checkWinCol(const char &playerColor) const {
     return 0;
 }
 
-bool board::checkWinPrimaryDiagonals(const char &playerColor) const {
+bool grid::checkWinPrimaryDiagonals(const char &playerColor) const {
     // You can only connect X on a primary diagonal if it's "start" is in
     // the matrix's top left. More specifically, the bounds are given by
     // subtracting the number of elements you want to connect (eg, 4) from the
@@ -139,7 +139,7 @@ bool board::checkWinPrimaryDiagonals(const char &playerColor) const {
     return 0;
 }
 
-bool board::checkWinSecondaryDiagonals(const char &playerColor) const {
+bool grid::checkWinSecondaryDiagonals(const char &playerColor) const {
     // You can only connect X on a secondary diagonal if it's "start" is in
     // the matrix's bottom left. Look at primary for bounds explanation.
     for (int i = ROWS - 1; i > ROWS - CONNECT; --i) {
@@ -152,8 +152,8 @@ bool board::checkWinSecondaryDiagonals(const char &playerColor) const {
     return 0;
 }
 
-bool board::checkWinHelper(const char &color, const int &i, const int &j,
-                           const winTypes &winType) const {
+bool grid::checkWinHelper(const char &color, const int &i, const int &j,
+                          const winTypes &winType) const {
     for (int k = 1; k < CONNECT; ++k) {
         if ((winType == row) && (this->arena[i][j + k] != color)) break;
         if ((winType == col) && (this->arena[i - k][j] != color)) break;

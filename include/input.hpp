@@ -3,10 +3,7 @@
 #include "string"
 namespace Input {
 struct interrupt {};
-struct emptyLine {};
-struct invalidColorFormat {
-    std::string str;
-};
+struct invalidColorFormat {};
 struct invalidColor {
     std::string str;
 };
