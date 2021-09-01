@@ -31,8 +31,10 @@ class board {
     bool checkUpdateArena(const int &moveColunm) const;
     void updateArena(const int &moveColunm, const char &playerColor);
     bool checkWin(const char &playerColor) const;
-    void setPlayers(const char &player, const int &i);
-    char getPlayers(const int &i) const;
+    void setPlayers(const char &player, const int &i) {
+        this->players[i] = player;
+    }
+    char getPlayers(const int &i) const { return this->players[i]; }
 
   private:
     char arena[ROWS][COLUMNS];

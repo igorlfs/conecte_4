@@ -5,10 +5,6 @@
 
 using namespace std;
 
-char board::getPlayers(const int &i) const { return this->players[i]; }
-void board::setPlayers(const char &player, const int &i) {
-    this->players[i] = player;
-}
 board::board() {
     for (int i = 0; i < ROWS; ++i) {
         for (int j = 0; j < COLUMNS; ++j) {
