@@ -1,45 +1,58 @@
 #include "board.hpp"
 
+#include "input.hpp"
 #include <iostream>
+#include <regex>
 #include <string>
 
 using namespace std;
 
-char leJogador();
-char outroJogador(char jogador1);
+char readPlayer();
 void jogue(char *jogador, board tabuleiro);
 
 int main() {
-    board tabuleiro;
+    board grid;
     char jogador[2];
 
-    jogador[0] = leJogador();
-    jogador[1] = outroJogador(jogador[0]);
-    jogue(jogador, tabuleiro);
+    jogador[0] = readPlayer();
+    (jogador[0] == 'A') ? jogador[1] = 'V' : jogador[1] = 'A';
+    jogue(jogador, grid);
     return 0;
 }
 
-char leJogador() {
-    char jogador = '\0';
-    do {
-        string input;
-        cout << "Escolha sua cor:\n(" << CHAR_YELLOW << ") para Amarelo\n("
-             << CHAR_RED << ") para Vermelho\n";
-        getline(cin, input);
-        if (!input.find(CHAR_YELLOW)) {
-            jogador = input[input.find(CHAR_YELLOW)];
-        } else if (!input.find(CHAR_RED)) {
-            jogador = input[input.find(CHAR_RED)];
-        }
-    } while (jogador != 'A' && jogador != 'V');
-    return jogador;
-}
-
-char outroJogador(char jogador1) {
-    if (jogador1 == 'A') {
-        return 'V';
-    } else {
-        return 'A';
+char readPlayer() {
+chooseColorAgain:
+    try {
+        std::regex expectedFormat("\\s*\\w\\s*");
+        std::string readLine;
+        cout << "Escolha sua cor ('A' para Amarelo ou 'V' para Vermelho): ";
+        std::getline(std::cin, readLine);
+        if (std::cin.eof()) throw Input::interrupt();
+        if (readLine.empty()) throw Input::emptyLine();
+        if (!std::regex_match(readLine, expectedFormat))
+            throw Input::invalidColorFormat{readLine};
+        char colorInitial;
+        std::stringstream ss(readLine);
+        ss >> colorInitial;
+        if (colorInitial != 'A' && colorInitial != 'V')
+            throw Input::invalidColor{readLine};
+        return colorInitial;
+    } catch (Input::interrupt e) {
+        std::cout << "\n\nA entrada de dados foi interrompida. Saindo.\n\n";
+        exit(1);
+    } catch (Input::emptyLine e) {
+        std::cout << "\nNão foi informado nenhum dado."
+                  << "\nPor favor, insira uma cor.\n\n";
+        goto chooseColorAgain;
+    } catch (Input::invalidColorFormat e) {
+        std::cout << "\nEntrada inválida: " << e.str
+                  << "\nA cor deve ser uma ÚNICA letra minúscula, a inicial da "
+                     "cor desejada\n\n";
+        goto chooseColorAgain;
+    } catch (Input::invalidColor e) {
+        std::cout << "\nEntrada inválida: " << e.str
+                  << "\nA cor escolhida não está disponível.\n\n";
+        goto chooseColorAgain;
     }
 }
 
