@@ -13,8 +13,8 @@
 enum winTypes {
     row,
     col,
-    primary,
-    secondary,
+    pri,
+    sec,
 };
 
 class board {

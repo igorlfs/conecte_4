@@ -6,9 +6,8 @@
 using namespace std;
 
 board::board() {
-    for (int i = 0; i < ROWS; ++i) {
+    for (int i = 0; i < ROWS; ++i)
         for (int j = 0; j < COLUMNS; ++j) this->arena[i][j] = EMPTY;
-    }
     this->printArena();
 }
 void board::printArena() const {
@@ -54,7 +53,6 @@ void board::printArenaColorHelper(const char &playerColor) const {
 }
 
 void board::updateArena(const int &moveColumn, const char &playerColor) {
-    // Assert the move is valid
     assert(this->checkUpdateArena(moveColumn));
     for (int i = ROWS - 1; i >= 0; --i) {
         if (this->arena[i][moveColumn] == EMPTY) {
