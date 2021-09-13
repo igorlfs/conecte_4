@@ -15,8 +15,24 @@ int main() {
     char player[2];
 
     player[0] = readPlayer();
-    (player[0] == 'A') ? player[1] = 'V' : player[1] = 'A';
-    play(player, grid);
+    (player[0] == CHAR_YELLOW) ? player[1] = CHAR_RED : player[1] = CHAR_YELLOW;
+    int numMoves = 0;
+    while (numMoves < Board::grid::MAX_JOGADAS) {
+        int currentPlayer = numMoves % 2;
+        cout << "Vez do jogador " << currentPlayer + 1 << " ";
+        (player[currentPlayer] == CHAR_YELLOW)
+            ? cout << '(' << YELLOW << CHAR_YELLOW << RESET << ')'
+            : cout << '(' << RED << CHAR_RED << RESET << ')';
+        grid.updateArena(readColumn(player[currentPlayer], grid),
+                         player[currentPlayer]);
+        grid.printArena();
+        if (grid.checkWin(player[currentPlayer])) {
+            cout << currentPlayer + 1 << " venceu!\n";
+            break;
+        }
+        numMoves++;
+        if (numMoves == Board::grid::MAX_JOGADAS) cout << "O jogo empatou!\n";
+    }
     return 0;
 }
 

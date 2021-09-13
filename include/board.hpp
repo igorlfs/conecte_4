@@ -1,5 +1,6 @@
 #ifndef BOARD_H
 #define BOARD_H
+#include <cassert>
 
 // Colors
 #define YELLOW "\033[33m"
@@ -8,48 +9,43 @@
 #define RESET "\033[0m"
 
 // Special characters
-#define BALL "⬤"
+static const char *BALL = "⬤";
 
 static constexpr char CHAR_YELLOW = 'A';
 static constexpr char CHAR_RED = 'V';
 
 namespace Board {
-enum winTypes {
-    row,
-    col,
-    pri,
-    sec,
-};
+
+static constexpr char EMPTY = ' ';
+
+enum winTypes { row, col, pri, sec };
 
 class grid {
   public:
     static constexpr int ROWS = 6;
-    static constexpr int COLUMNS = 7;
-    static constexpr int MAX_JOGADAS = ROWS * COLUMNS;
+    static constexpr int COLS = 7;
+    static constexpr int MAX_JOGADAS = ROWS * COLS;
     static constexpr int CONNECT = 4;
 
-    static constexpr char EMPTY = ' ';
-
+    // Fill grid with EMPTY
     grid();
+
     void printArena() const;
-    bool checkUpdateArena(const int &moveColunm) const;
-    void updateArena(const int &moveColunm, const char &playerColor);
+
     bool checkWin(const char &playerColor) const;
-    void setPlayers(const char &player, const int &i) {
-        this->players[i] = player;
+
+    void updateArena(const int &moveColunm, const char &playerColor);
+    char getCell(const int &i, const int &j) const {
+        assert(i >= 0 && i < ROWS && j >= 0 && j < COLS);
+        return this->arena[i][j];
     }
-    char getPlayers(const int &i) const { return this->players[i]; }
 
   private:
-    char arena[ROWS][COLUMNS];
-    char players[2];
+    char arena[ROWS][COLS];
 
     void printHeader() const;
     void printArenaColorHelper(const char &playerColor) const;
     void printSeparator() const;
-
-    bool checkFullColumn(const int &moveColunm) const;
-    bool checkColumnOutOfBounds(const int &moveColunm) const;
 
     bool checkWinRow(const char &playerColor) const;
     bool checkWinCol(const char &playerColor) const;

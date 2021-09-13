@@ -1,22 +1,21 @@
 #include "board.hpp"
 
-#include <assert.h>
 #include <iostream>
 
 using namespace Board;
 
 grid::grid() {
     for (int i = 0; i < ROWS; ++i)
-        for (int j = 0; j < COLUMNS; ++j) this->arena[i][j] = EMPTY;
+        for (int j = 0; j < COLS; ++j) this->arena[i][j] = EMPTY;
     this->printArena();
 }
 void grid::printArena() const {
     this->printHeader();
     for (int i = 0; i < ROWS; ++i) {
         this->printSeparator();
-        for (int j = 0; j < COLUMNS; ++j) {
+        for (int j = 0; j < COLS; ++j) {
             this->printArenaColorHelper(this->arena[i][j]);
-            if (j != COLUMNS - 1) std::cout << BLUE " │ " << RESET;
+            if (j != COLS - 1) std::cout << BLUE " │ " << RESET;
         }
         std::cout.put('\n');
     }
@@ -24,18 +23,18 @@ void grid::printArena() const {
 }
 
 void grid::printHeader() const {
-    for (int i = 1; i < COLUMNS + 1; ++i) {
+    for (int i = 1; i < COLS + 1; ++i) {
         std::cout << i;
-        if (i != COLUMNS) std::cout << BLUE << " │ " << RESET;
+        if (i != COLS) std::cout << BLUE << " │ " << RESET;
     }
     std::cout.put('\n');
 }
 
 void grid::printSeparator() const {
-    for (int i = 0; i < COLUMNS; ++i) {
+    for (int i = 0; i < COLS; ++i) {
         if (i == 0)
             std::cout << BLUE << "──┼" << RESET;
-        else if (i == COLUMNS - 1)
+        else if (i == COLS - 1)
             std::cout << BLUE << "──" << RESET;
         else
             std::cout << BLUE << "───┼" << RESET;
@@ -53,37 +52,12 @@ void grid::printArenaColorHelper(const char &playerColor) const {
 }
 
 void grid::updateArena(const int &moveColumn, const char &playerColor) {
-    assert(this->checkUpdateArena(moveColumn));
     for (int i = ROWS - 1; i >= 0; --i) {
         if (this->arena[i][moveColumn] == EMPTY) {
             this->arena[i][moveColumn] = playerColor;
             return;
         }
     }
-}
-
-bool grid::checkUpdateArena(const int &moveColumn) const {
-    return (checkColumnOutOfBounds(moveColumn) && checkFullColumn(moveColumn));
-}
-
-bool grid::checkColumnOutOfBounds(const int &moveColumn) const {
-    if ((moveColumn > COLUMNS - 1) || (moveColumn < 0)) {
-        std::cout << "Jogada Inválida.\n"
-                     "Você inseriu um número inválido!\n"
-                     "Insira um número de 1 a 7.\n";
-        return 0;
-    }
-    return 1;
-}
-
-bool grid::checkFullColumn(const int &moveColumn) const {
-    if (this->arena[0][moveColumn] != EMPTY) {
-        std::cout << "Jogada Inválida.\n"
-                     "Você tentou jogar numa coluna cheia!\n"
-                     "Escolha outra coluna.\n";
-        return 0;
-    }
-    return 1;
 }
 
 bool grid::checkWin(const char &playerColor) const {
@@ -109,7 +83,7 @@ bool grid::checkWinRow(const char &playerColor) const {
 }
 
 bool grid::checkWinCol(const char &playerColor) const {
-    for (int j = 0; j < COLUMNS; ++j) {
+    for (int j = 0; j < COLS; ++j) {
         // You can't win a column if your character isn't in it's row #3
         // Or else you can only fill 3 rows
         if (this->arena[3][j] != playerColor) continue;
@@ -130,7 +104,7 @@ bool grid::checkWinPrimaryDiagonals(const char &playerColor) const {
     // subtracting the number of elements you want to connect (eg, 4) from the
     // matrix's dimensions (eg, 6x7)
     for (int i = 0; i <= ROWS - CONNECT; i++) {
-        for (int j = 0; j <= COLUMNS - CONNECT; j++) {
+        for (int j = 0; j <= COLS - CONNECT; j++) {
             if (this->arena[i][j] == playerColor) {
                 if (checkWinHelper(playerColor, i, j, pri)) return 1;
             }
@@ -143,7 +117,7 @@ bool grid::checkWinSecondaryDiagonals(const char &playerColor) const {
     // You can only connect X on a secondary diagonal if it's "start" is in
     // the matrix's bottom left. Look at primary for bounds explanation.
     for (int i = ROWS - 1; i > ROWS - CONNECT; --i) {
-        for (int j = 0; j <= COLUMNS - CONNECT; j++) {
+        for (int j = 0; j <= COLS - CONNECT; j++) {
             if (this->arena[i][j] == playerColor) {
                 if (checkWinHelper(playerColor, i, j, sec)) return 1;
             }
